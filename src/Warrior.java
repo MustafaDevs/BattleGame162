@@ -4,6 +4,10 @@
  * @author Mustafa Faqiryar
  */
 public class Warrior extends Character {
+    /**
+     * 
+     */
+
     private Weapon weapon;
     private int stamina;
 
@@ -26,6 +30,15 @@ public class Warrior extends Character {
      */
     public Weapon getWeapon() {
         return weapon;
+    }
+    
+    /**
+     * Gets the warrior's stamina.  Warriors require certain amounts of stamina to perform certain attacks.
+     * 
+     * @return The warrior's stamina.
+     */
+    public int getStamina() {
+        return stamina;
     }
 
     /**

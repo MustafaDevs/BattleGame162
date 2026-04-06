@@ -14,12 +14,13 @@ public class Weapon implements Attack {
     /** The percentage of damage dealt by the weapon that is converted to health. */
     private int lifeStealPercentage;
     /** The percentage of variance that an attack can have. */
-    private final double damageVariance = 0.2;
+    private final double damageVariance;
 
-    public Weapon(String name, int baseDamage, int lifeStealPercentage) {
+    public Weapon(String name, int baseDamage, int lifeStealPercentage, double damageVariance) {
         this.name = name;
         this.baseDamage = baseDamage;
         this.lifeStealPercentage = lifeStealPercentage;
+        this.damageVariance = damageVariance;
     }
 
     public String getName() {

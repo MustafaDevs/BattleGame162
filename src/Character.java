@@ -7,6 +7,8 @@ public abstract class Character implements Comparable<Character> {
 	 * - 
 	 */
 
+
+	// TODO: static fields
 	/** The name of the character. */
 	private Name name;
 	/** The clan of the character. */
