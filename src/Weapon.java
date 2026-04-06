@@ -1,16 +1,20 @@
+import java.util.Random;
+
 /**
  * A class representing a Weapon in the game, which has the properties of base
  * damage and life steal percentage.
  * 
  * @author Mustafa Faqiryar
  */
-public class Weapon {
+public class Weapon implements Attack {
     /** The name of the weapon. */
     private String name;
     /** The base damage of the weapon. */
     private int baseDamage;
     /** The percentage of damage dealt by the weapon that is converted to health. */
     private int lifeStealPercentage;
+    /** The percentage of variance that an attack can have. */
+    private final double damageVariance = 0.2;
 
     public Weapon(String name, int baseDamage, int lifeStealPercentage) {
         this.name = name;
@@ -30,8 +34,21 @@ public class Weapon {
         return lifeStealPercentage;
     }
 
-    public int generateAttack() {
-        // TODO
-        return 0;
+    @Override
+    public void execute(Character self, Character target) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'execute'");
+    }
+
+    @Override
+    public int calculateDamage(Character self, double variance) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'calculateDamage'");
+    }
+
+    @Override
+    public boolean canAttack(Character self) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'canAttack'");
     }
 }

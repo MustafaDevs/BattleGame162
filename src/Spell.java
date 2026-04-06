@@ -1,4 +1,4 @@
-public class Spell {
+public class Spell implements Attack {
     /** The name of the spell.  */
     private String name;
     /** The number of spell points required to cast the spell.  */
@@ -39,5 +39,23 @@ public class Spell {
     public String toDetailedString() {
         String result = name + " (Cost: " + pointsToCast + " SP)" + " | Base Damage: " + baseDamage + " | Life Steal (%): " + lifeStealPercentage;
         return result;
+    }
+
+    @Override
+    public void execute(Character self, Character target) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'execute'");
+    }
+
+    @Override
+    public int calculateDamage(Character self, double variance) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'calculateDamage'");
+    }
+
+    @Override
+    public boolean canAttack(Character self) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'canAttack'");
     }
 }
