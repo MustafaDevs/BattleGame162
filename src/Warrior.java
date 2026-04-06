@@ -5,6 +5,7 @@
  */
 public class Warrior extends Character {
     private Weapon weapon;
+    private int stamina;
 
     /** Creates a new Warrior character.
      * 
