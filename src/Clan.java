@@ -4,8 +4,6 @@
  * @author Mustafa Faqiryar
  */
 public class Clan {
-
-
     /** The name of the clan. */
     private final String name;
     /** The percentage increase in damage for clan members. */
@@ -20,16 +18,18 @@ public class Clan {
     /**
      * Creates a new clan with certain buffs.
      * 
-     * @param name The name of the clan.
+     * @param name                 The name of the clan.
      * @param damageBuffPercentage The damage buff (percentage)
      * @param healthBuffPercentage The health buff (percentage)
-     * @param spellDamageBuff The spell damage buff 
-     * @param weaponDamageBuff The weapon damage buff
-     * @postcondition A new clan will be created with the specified buffs. Negative buff values will automatically be set to 0.
+     * @param spellDamageBuff      The spell damage buff
+     * @param weaponDamageBuff     The weapon damage buff
+     * @postcondition A new clan will be created with the specified buffs. Negative
+     *                buff values will automatically be set to 0.
      * 
      * @throws IllegalStateException if any of the buff values are negative.
      */
-    public Clan(String name, double damageBuffPercentage, double healthBuffPercentage, int spellDamageBuff, int weaponDamageBuff) {
+    public Clan(String name, double damageBuffPercentage, double healthBuffPercentage, int spellDamageBuff,
+            int weaponDamageBuff) {
         this.name = name;
         this.damageBuffPercentage = damageBuffPercentage;
         this.healthBuffPercentage = healthBuffPercentage;
@@ -40,7 +40,8 @@ public class Clan {
 
     /**
      * Checks that no class invariants of the Clan class are violated.
-     * Buff values must be greater than or equal to 0 and are set to 0 if this is violated.
+     * Buff values must be greater than or equal to 0 and are set to 0 if this is
+     * violated.
      * 
      * The clan name must not be null, and an exception is thrown if it is.
      * 
@@ -67,7 +68,7 @@ public class Clan {
             weaponDamageBuff = 0;
         }
     }
-    
+
     /**
      * Gets the health buff percentage of the clan.
      * 
@@ -125,23 +126,31 @@ public class Clan {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true; // Meaning, they are literally the same object in memory.
+        if (obj == null || getClass() != obj.getClass())
+            return false;
 
-        Clan clan = (Clan) obj;
+        Clan otherClan = (Clan) obj;
 
-        if (damageBuffPercentage != clan.damageBuffPercentage) return false;
-        if (healthBuffPercentage != clan.healthBuffPercentage) return false;
-        if (spellDamageBuff != clan.spellDamageBuff) return false;
-        if (weaponDamageBuff != clan.weaponDamageBuff) return false;
+        // Pretty sure this goes against our 162 coding style (no brackets for the
+        // conditionals), but it looks a lot cleaner to me here.
+        if (this.damageBuffPercentage != otherClan.damageBuffPercentage)
+            return false;
+        if (this.healthBuffPercentage != otherClan.healthBuffPercentage)
+            return false;
+        if (this.spellDamageBuff != otherClan.spellDamageBuff)
+            return false;
+        if (this.weaponDamageBuff != otherClan.weaponDamageBuff)
+            return false;
 
-
-        return name.equals(clan.name);
+        return name.equals(otherClan.name);
     }
 
     @Override
     public int hashCode() {
-        // Apparently, 31 is the ideal prime number for hashCode() methods.  Why?  I don't know.
+        // Apparently, 31 is the ideal prime number for hashCode() methods. Why? I don't
+        // know.
         int result = name.hashCode();
         result = 31 * result + Double.hashCode(damageBuffPercentage);
         result = 31 * result + Double.hashCode(healthBuffPercentage);
@@ -150,6 +159,5 @@ public class Clan {
 
         return result;
     }
-
 
 }

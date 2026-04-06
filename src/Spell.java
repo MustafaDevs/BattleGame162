@@ -14,11 +14,21 @@ public class Spell {
         return name;
     }
 
+    public int getPointsToCast() {
+        return pointsToCast;
+    }
+
     public int getBaseDamage() {
         return baseDamage;
     }
 
     public double getLifeStealPercentage() {
         return lifeStealPercentage;
+    }
+
+    @Override
+    public String toString() {
+        String result = name + " (Cost: " + pointsToCast + " SP)" + " | Base Damage: " + baseDamage + " | Life Steal (%): " + lifeStealPercentage;
+        return result;
     }
 }

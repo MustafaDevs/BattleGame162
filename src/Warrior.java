@@ -6,15 +6,33 @@
 public class Warrior extends Character {
     private Weapon weapon;
 
+    /** Creates a new Warrior character.
+     * 
+     * @param name The name of the warrior.
+     * @param clan The clan of the warrior.
+     * @param weapon The warrior's weapon.
+     * @postcondition A new warrior character will be created with the specified name, clan, and weapon.
+     */
     public Warrior(Name name, Clan clan, Weapon weapon) {
         super(name, clan);
         this.weapon = weapon;
     }
 
+    /**
+     * Gets the warrior's weapon.
+     * 
+     * @return The warrior's weapon.
+     */
     public Weapon getWeapon() {
         return weapon;
     }
 
+    /**
+     * Updates the warrior's weapon.
+     * 
+     * @param newWeapon The new weapon for the warrior.
+     * @postcondition The warrior's weapon will be updated to the new weapon.
+     */
     public void updateWeapon(Weapon newWeapon) {
         this.weapon = newWeapon;
     }

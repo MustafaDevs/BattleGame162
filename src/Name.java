@@ -13,8 +13,9 @@ public class Name {
      * Creates a new name with the given first and last name.
      * 
      * @param firstName The first name.
-     * @param lastName The last name.
-     * @throws IllegalArgumentException If either the first or last name is null or empty.
+     * @param lastName  The last name.
+     * @throws IllegalArgumentException If either the first or last name is null or
+     *                                  empty.
      */
     public Name(String firstName, String lastName) {
         if (firstName == null || lastName == null) {
@@ -62,7 +63,7 @@ public class Name {
             return false;
         }
 
-        Name otherName = (Name)obj;
+        Name otherName = (Name) obj;
         return otherName.getFullName().equals(this.getFullName());
     }
 
