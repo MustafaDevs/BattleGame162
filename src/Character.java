@@ -2,6 +2,11 @@
  * A class representing a Character in the game. Has a name, clan, and health.
  */
 public abstract class Character implements Comparable<Character> {
+	/**
+	 * Class Invariants:
+	 * - 
+	 */
+
 	/** The name of the character. */
 	private Name name;
 	/** The clan of the character. */
@@ -48,7 +53,8 @@ public abstract class Character implements Comparable<Character> {
 	/**
 	 * Gets the level of the player.
 	 * 
-	 * @return The player's level.  Equivalent to the player's experience points divided by 100 (rounded down).
+	 * @return The player's level. Equivalent to the player's experience points
+	 *         divided by 100 (rounded down).
 	 */
 	public int getLevel() {
 		return experiencePoints / 100; // Level is determined by experience points, with 100 XP per level.
@@ -61,6 +67,15 @@ public abstract class Character implements Comparable<Character> {
 	 */
 	public int getHealth() {
 		return health;
+	}
+
+	/**
+	 * Gets the maximum health of the character.
+	 * 
+	 * @return The character's maximum health (100 + 10 * level)
+	 */
+	public int getMaxHealth() {
+		return 100 + (getLevel() * 10); // Max health increases by 10 per level.
 	}
 
 	/**
@@ -78,7 +93,8 @@ public abstract class Character implements Comparable<Character> {
 
 	@Override
 	public String toString() {
-		return String.format("%s (%s, Level: %d, XP: %d, Health: %d) from the %s clan.)", name.getFullName(), getCharacterType(), getLevel(), experiencePoints, health, clan.getName());
+		return String.format("%s (%s, Level: %d, XP: %d, Health: %d) from the %s clan.)", name.getFullName(),
+				getCharacterType(), getLevel(), experiencePoints, health, clan.getName());
 	}
 
 	@Override
@@ -95,7 +111,8 @@ public abstract class Character implements Comparable<Character> {
 		} else if (!this.name.equals(other.name)) {
 			return this.name.getFullName().compareTo(other.name.getFullName());
 		} else {
-			// After exhausting all other comparisons, the characters are equal if their clans are equal.
+			// After exhausting all other comparisons, the characters are equal if their
+			// clans are equal.
 			return this.clan.getName().compareTo(other.clan.getName());
 		}
 	}

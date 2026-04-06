@@ -1,11 +1,16 @@
 public class Spell {
+    /** The name of the spell.  */
     private String name;
+    /** The number of spell points required to cast the spell.  */
     private int pointsToCast;
+    /** The amount of damage the spell deals before any multipliers.  */
     private int baseDamage;
+    /** The percentage of damage that is converted to HP for the caster.  */
     private double lifeStealPercentage;
 
     public Spell(String name, int pointsToCast, int baseDamage, double lifeStealPercentage) {
         this.name = name;
+        this.pointsToCast = pointsToCast;
         this.baseDamage = baseDamage;
         this.lifeStealPercentage = lifeStealPercentage;
     }
@@ -28,6 +33,10 @@ public class Spell {
 
     @Override
     public String toString() {
+        return name + " (" + pointsToCast + " SP, " + baseDamage + " DMG, " + lifeStealPercentage + "% LS" + ")";
+    }
+
+    public String toDetailedString() {
         String result = name + " (Cost: " + pointsToCast + " SP)" + " | Base Damage: " + baseDamage + " | Life Steal (%): " + lifeStealPercentage;
         return result;
     }
