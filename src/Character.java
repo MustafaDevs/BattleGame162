@@ -1,14 +1,14 @@
+
 /**
  * A class representing a Character in the game. Has a name, clan, and health.
  */
 public abstract class Character implements Comparable<Character> {
 	/**
 	 * Class Invariants:
-	 * - 
+	 * - 0 <= Health <= 100 + (getLevel() * 10)
+	 * - 0 <= experiencePoints
 	 */
 
-
-	// TODO: static fields
 	/** The name of the character. */
 	private Name name;
 	/** The clan of the character. */
@@ -89,9 +89,69 @@ public abstract class Character implements Comparable<Character> {
 		return experiencePoints;
 	}
 
-	public String getCharacterType() {
-		return "Generic Character";
+	/**
+	 * Sets the health of the player to a hard set number.
+	 * 
+	 * @param newHp The new number that the character's health will be set to.
+	 * @postcondition The character's health will be equal to newHp, unless one of
+	 *                two conditions is not met:
+	 *                (1). If newHp < 0, the character's health will be set to 0.
+	 *                (2). If newHp > getMaxHealth(), health will be set to
+	 *                getMaxHealth().
+	 */
+	private void setHealth(int newHp) {
+		if (newHp < 0) {
+			health = 0;
+		} else if (newHp > getMaxHealth()) {
+			health = getMaxHealth();
+		} else {
+			health = newHp;
+		}
 	}
+
+	/**
+	 * Subtracts health from the character.
+	 * 
+	 * @param amount The amount of health to subtract. Must be a positive integer.
+	 * @postcondition The character's health will be equal to their current health
+	 *                minus
+	 *                the amount to subtract. If the amount to subtract by
+	 *                is greater than or equal to the character's current health,
+	 *                their health will be set to 0.
+	 * @throws IllegalArgumentException if hpToRemove is not a positive integer.
+	 */
+	public void subtractHealth(int hpToRemove) {
+		if (hpToRemove < 1) {
+			throw new IllegalArgumentException("The amount of health to be removed must be a positive integer.");
+		}
+		setHealth(getHealth() - hpToRemove);
+	}
+
+	/**
+	 * Adds health to the character.
+	 * 
+	 * @param hpToAdd The amount of health points to add to the character. Must be a
+	 *                positive integer.
+	 * @postcondition The character's health will be equal to their current health
+	 *                plus
+	 *                the amount to add. If the amount to add by
+	 *                is greater than or equal to the character's current health,
+	 *                their health will be set to 0.
+	 * @throws IllegalArgumentException if hpToAdd is not a positive integer.
+	 */
+	public void addHealth(int hpToAdd) {
+		if (hpToAdd < 1) {
+			throw new IllegalArgumentException("The amount of health to be added must be a positive integer.");
+		}
+		setHealth(getHealth() + hpToAdd);
+	}
+
+	/**
+	 * Gets the character's specific type.
+	 * 
+	 * @return The character's class/type (mage, warrior, etc.)
+	 */
+	public abstract String getCharacterType();
 
 	@Override
 	public String toString() {
@@ -100,11 +160,43 @@ public abstract class Character implements Comparable<Character> {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || this.getClass() != obj.getClass())
+			return false;
+
+		Character otherCharacter = (Character) obj;
+
+		if (this.getLevel() != otherCharacter.getLevel()) {
+			return false;
+		}
+		if (this.experiencePoints != otherCharacter.experiencePoints) {
+			return false;
+		}
+		if (!this.name.equals(otherCharacter.name)) {
+			return false;
+		}
+
+		return this.clan.equals(otherCharacter.clan);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = name.hashCode();
+		result = 31 * result + clan.hashCode();
+		result = 31 * result + health;
+		result = 31 * result + experiencePoints;
+
+		return result;
+	}
+
+	@Override
 	public int compareTo(Character other) {
 		// Character comparison order of precedence:
 		// Level (1) -> XP (2) -> Name (3) -> Clan (4) -> Equal (CONCLUSION).
-		// We will not take health into account for the sake of this comparison since it
-		// is a volatile property.
+		// We will not take health into account for the sake of this comparison 
+		// since it is a volatile property.
 
 		if (this.getLevel() != other.getLevel()) {
 			return other.getLevel() - this.getLevel(); //

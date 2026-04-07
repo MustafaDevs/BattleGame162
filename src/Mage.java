@@ -15,8 +15,7 @@ public class Mage extends Character {
      * - A mage cannot cast a spell that they do not know.
      * - A mage cannot cast a spell if the spell costs more spell points than they
      * currently have.
-     * - A mage's spell points must be in the range: 0 <= Spell Points <= Max Spell
-     * Points
+     * - A mage's spell points must be in the range: 0 <= Spell Points <= Max Spell Points
      */
 
     /** The character's spell points. */

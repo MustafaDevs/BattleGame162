@@ -21,6 +21,7 @@ public class Name {
         if (firstName == null || lastName == null) {
             throw new IllegalArgumentException("The first and last name must not be null.");
         }
+        
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -59,12 +60,16 @@ public class Name {
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) return true;
         if (obj == null || this.getClass() != obj.getClass()) {
             return false;
         }
 
         Name otherName = (Name) obj;
-        return otherName.getFullName().equals(this.getFullName());
+        if (!this.firstName.equals(otherName.firstName))
+            return false;
+
+        return this.lastName.equals(otherName.lastName);
     }
 
     @Override
