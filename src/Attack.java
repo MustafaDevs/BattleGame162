@@ -17,6 +17,7 @@ public interface Attack {
      * @param self The character performing the attack.
      * @param variance The percentage of variance in the min/max potential damage (0.5 = 50%, 0.02 = 2%)
      * @return A rounded down integer value representing the amount of damage performed by this attack.
+     * @throws IllegalArgumentException if variance is less than 0.0
      */
     int calculateDamage(Character self, double variance);
 
