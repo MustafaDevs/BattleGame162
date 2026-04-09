@@ -24,7 +24,7 @@ public interface Attack {
     /**
      * Checks if a given character is able to perform an attack.
      * 
-     * @param self The character that is verifying its ability to attack.
+     * @param self The character that is verifying its ability to use this attack.
      * @return true if the attack can be performed by the character.
      */
     boolean canAttack(Character self);

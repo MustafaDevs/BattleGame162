@@ -12,7 +12,7 @@ public class Mage extends Character {
      * Class Invariants:
      * - A mage's maximum spell points must be equal to 25 + (5 * the mage's level).
      * - A mage's spell points cannot exceed their maximum spell points.
-     * - A mage cannot cast a spell that they do not know.
+     * - A mage cannot cast a spell that they do not know (i.e., is not in the set of spells).
      * - A mage cannot cast a spell if the spell costs more spell points than they
      * currently have.
      * - A mage's spell points must be in the range: 0 <= Spell Points <= Max Spell Points
@@ -21,7 +21,7 @@ public class Mage extends Character {
     /** The character's spell points. */
     private int spellPoints;
     /** The set of spells the character knows/can use. */
-    private Set<Spell> spells;
+    private final Set<Spell> spells;
 
     /**
      * Creates a new mage with the given name and clan.
@@ -35,6 +35,12 @@ public class Mage extends Character {
         this.spells = new HashSet<>();
     }
 
+
+    /**
+     * Gets the set of the mage's known spells as a string.
+     * 
+     * @return A string representation of the set of the mage's spells.
+     */
     public String getSpells() {
         return spells.toString();
     }
@@ -79,7 +85,7 @@ public class Mage extends Character {
      *         and has enough spell points).
      */
     public boolean canCastSpell(Spell spell) {
-        return spells.contains(spell) && spellPoints >= spell.getPointsToCast();
+        return (spells.contains(spell)) && (spellPoints >= spell.getPointsToCast());
     }
 
     /**
@@ -103,5 +109,20 @@ public class Mage extends Character {
     @Override
     public String getCharacterType() {
         return "Mage";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) return false;
+        else {
+            Mage otherMage = (Mage)obj;
+
+            // Stamina is a volatile property and will therefore not be used to check equality.
+            if (!otherMage.spells.equals(otherMage.spells)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

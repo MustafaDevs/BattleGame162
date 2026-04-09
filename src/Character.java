@@ -10,9 +10,9 @@ public abstract class Character implements Comparable<Character> {
 	 */
 
 	/** The name of the character. */
-	private Name name;
+	private final Name name;
 	/** The clan of the character. */
-	private Clan clan;
+	private final Clan clan;
 	/** The health (hit points) of the character. */
 	private int health;
 	/** The character's experience points. */
@@ -94,7 +94,7 @@ public abstract class Character implements Comparable<Character> {
 	 * 
 	 * @param newHp The new number that the character's health will be set to.
 	 * @postcondition The character's health will be equal to newHp, unless one of
-	 *                two conditions is not met:
+	 *                newHp falls into one of these two cases:
 	 *                (1). If newHp < 0, the character's health will be set to 0.
 	 *                (2). If newHp > getMaxHealth(), health will be set to
 	 *                getMaxHealth().
@@ -107,6 +107,19 @@ public abstract class Character implements Comparable<Character> {
 		} else {
 			health = newHp;
 		}
+	}
+
+	/**
+	 * Increases the character's current experiencePoints by some given amount.
+	 * 
+	 * @param xpToAdd The amount of experience points that should be added onto the character's current experience points.  Must be a positive integer.
+	 * @throws IllegalArgumentException if xpToAdd is less than or equal to 0 (i.e., xpToAdd is not a positive integer)
+	 */
+	private void addExperiencePoints(int xpToAdd) {
+		if (xpToAdd <= 0) {
+			throw new IllegalArgumentException("The number of experience points to add must be a positive integer.");
+		}
+		experiencePoints += xpToAdd;
 	}
 
 	/**
@@ -195,7 +208,7 @@ public abstract class Character implements Comparable<Character> {
 	public int compareTo(Character other) {
 		// Character comparison order of precedence:
 		// Level (1) -> XP (2) -> Name (3) -> Clan (4) -> Equal (CONCLUSION).
-		// We will not take health into account for the sake of this comparison 
+		// We will not take health into account for the sake of this comparison
 		// since it is a volatile property.
 
 		if (this.getLevel() != other.getLevel()) {
@@ -203,10 +216,17 @@ public abstract class Character implements Comparable<Character> {
 		} else if (this.experiencePoints != other.experiencePoints) {
 			return other.experiencePoints - this.experiencePoints;
 		} else if (!this.name.equals(other.name)) {
+			// Using getFullName() allows us to compare using the String.compareTo() method
+			// rather than having our own implementation, which I find unnecessary (though that is
+			// definitely a valid design choice).
 			return this.name.getFullName().compareTo(other.name.getFullName());
 		} else {
-			// After exhausting all other comparisons, the characters are equal if their
-			// clans are equal.
+			// After exhausting all other comparisons, the characters' equality
+			// comes down to their clan names (alphabetically).
+
+			// Though we could compare clan buffs, determining which buffs are more
+			// important than others
+			// is a bit tricky and, in my opinion, not necessary.
 			return this.clan.getName().compareTo(other.clan.getName());
 		}
 	}

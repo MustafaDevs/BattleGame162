@@ -31,6 +31,12 @@ public class Spell implements Attack {
         return lifeStealPercentage;
     }
 
+    public String toDetailedString() {
+        String result = name + " (Cost: " + pointsToCast + " SP)" + " | Base Damage: " + baseDamage
+                + " | Life Steal (%): " + lifeStealPercentage;
+        return result;
+    }
+
     @Override
     public String toString() {
         return name + " (" + pointsToCast + " SP, " + baseDamage + " DMG, " + lifeStealPercentage + "% LS" + ")";
@@ -57,9 +63,13 @@ public class Spell implements Attack {
         return this.name.equals(otherSpell.name);
     }
 
-    public String toDetailedString() {
-        String result = name + " (Cost: " + pointsToCast + " SP)" + " | Base Damage: " + baseDamage
-                + " | Life Steal (%): " + lifeStealPercentage;
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + pointsToCast;
+        result = 31 * result + baseDamage;
+        result = 31 * result + (int)lifeStealPercentage;
+
         return result;
     }
 

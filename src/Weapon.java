@@ -12,11 +12,11 @@ public class Weapon implements Attack {
     /** The base damage of the weapon. */
     private int baseDamage;
     /** The percentage of damage dealt by the weapon that is converted to health. */
-    private int lifeStealPercentage;
+    private double lifeStealPercentage;
     /** The percentage of variance that an attack can have. */
     private final double damageVariance;
 
-    public Weapon(String name, int baseDamage, int lifeStealPercentage, double damageVariance) {
+    public Weapon(String name, int baseDamage, double  lifeStealPercentage, double damageVariance) {
         this.name = name;
         this.baseDamage = baseDamage;
         this.lifeStealPercentage = lifeStealPercentage;
@@ -31,8 +31,18 @@ public class Weapon implements Attack {
         return baseDamage;
     }
 
-    public int getLifeStealPercentage() {
+    public double getLifeStealPercentage() {
         return lifeStealPercentage;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + baseDamage;
+        result = 31 * result + (int)lifeStealPercentage;
+        result = 31 * result + (int)damageVariance; 
+
+        return result;
     }
 
     @Override

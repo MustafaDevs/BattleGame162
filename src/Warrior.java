@@ -5,6 +5,8 @@
  */
 public class Warrior extends Character {
     /**
+     * Class Invariants:
+     * - A warrior's stamina must be a nonnegative number.
      * 
      */
 
@@ -49,5 +51,39 @@ public class Warrior extends Character {
      */
     public void updateWeapon(Weapon newWeapon) {
         this.weapon = newWeapon;
+    }
+
+    @Override
+    public String getCharacterType() {
+        return "Warrior";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) return false;
+        else {
+            Warrior otherWarrior = (Warrior)obj;
+            if (!otherWarrior.weapon.equals(this.weapon)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        // TODO
+        return "";
+    }
+
+    
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + weapon.hashCode();
+        result = 31 * result + stamina;
+        
+        return result;
     }
 }
