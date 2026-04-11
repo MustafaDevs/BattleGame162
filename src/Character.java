@@ -166,18 +166,28 @@ public abstract class Character implements Comparable<Character> {
 	 */
 	public abstract String getCharacterType();
 
+	/**
+     * Checks if a given character is able to perform an attack.
+     * 
+     * @param attack The attack to check if the character can use.
+     * @return true if the character attacker can perform the attack.
+     */
+    public abstract boolean canUse(Attack attack);
+
 	@Override
 	public String toString() {
-		return String.format("%s (%s, Level: %d, XP: %d, Health: %d) from the %s clan.)", name.getFullName(),
+		return String.format("%s (%s, Level: %d, XP: %d, HP: %d) from the %s clan.)", name.getFullName(),
 				getCharacterType(), getLevel(), experiencePoints, health, clan.getName());
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null || this.getClass() != obj.getClass())
+		}
+		if (obj == null || this.getClass() != obj.getClass()) {
 			return false;
+		}
 
 		Character otherCharacter = (Character) obj;
 

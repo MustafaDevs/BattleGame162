@@ -10,10 +10,10 @@ public class Clan {
     private double damageBuffPercentage;
     /** The percentage increase in health for clan members. */
     private double healthBuffPercentage;
-    /** The additional spell damage for clan members. */
-    private int spellDamageBuff;
-    /** The additional weapon damage for clan members. */
-    private int weaponDamageBuff;
+    /** The additional spell damage percentage for clan members. */
+    private double spellDamageBuffPercentage;
+    /** The additional weapon damage percentage for clan members. */
+    private double weaponDamageBuffPercentage;
 
     /**
      * Creates a new clan with certain buffs.
@@ -21,21 +21,30 @@ public class Clan {
      * @param name                 The name of the clan.
      * @param damageBuffPercentage The damage buff (percentage)
      * @param healthBuffPercentage The health buff (percentage)
-     * @param spellDamageBuff      The spell damage buff
-     * @param weaponDamageBuff     The weapon damage buff
+    * @param spellDamageBuffPercentage      The spell damage buff (percentage)
+    * @param weaponDamageBuffPercentage     The weapon damage buff (percentage)
      * @postcondition A new clan will be created with the specified buffs. Negative
      *                buff values will automatically be set to 0.
      * 
      * @throws IllegalStateException if any of the buff values are negative.
      */
-    public Clan(String name, double damageBuffPercentage, double healthBuffPercentage, int spellDamageBuff,
-            int weaponDamageBuff) {
+    public Clan(String name, double damageBuffPercentage, double healthBuffPercentage, double spellDamageBuffPercentage,
+            double weaponDamageBuffPercentage) {
         this.name = name;
         this.damageBuffPercentage = damageBuffPercentage;
         this.healthBuffPercentage = healthBuffPercentage;
-        this.spellDamageBuff = spellDamageBuff;
-        this.weaponDamageBuff = weaponDamageBuff;
+        this.spellDamageBuffPercentage = spellDamageBuffPercentage;
+        this.weaponDamageBuffPercentage = weaponDamageBuffPercentage;
         checkAndRepairInvariants();
+    }
+
+    /**
+     * Gets the name of the clan.
+     * 
+     * @return The name of the clan.
+     */
+    public String getName() {
+        return name;
     }
 
     /**
@@ -60,13 +69,22 @@ public class Clan {
             healthBuffPercentage = 0;
         }
 
-        if (spellDamageBuff < 0) {
-            spellDamageBuff = 0;
+        if (spellDamageBuffPercentage < 0) {
+            spellDamageBuffPercentage = 0;
         }
 
-        if (weaponDamageBuff < 0) {
-            weaponDamageBuff = 0;
+        if (weaponDamageBuffPercentage < 0) {
+            weaponDamageBuffPercentage = 0;
         }
+    }
+
+    /**
+     * Gets the damage buff percentage of the clan.
+     * 
+     * @return The damage buff percentage of the clan.
+     */
+    public double getDamageBuffPercentage() {
+        return damageBuffPercentage;
     }
 
     /**
@@ -79,39 +97,21 @@ public class Clan {
     }
 
     /**
-     * Gets the spell damage buff (flat amount) of the clan.
+     * Gets the spell damage buff percentage of the clan.
      * 
-     * @return The spell damage buff of the clan.
+     * @return The spell damage buff percentage of the clan.
      */
-    public int getSpellDamageBuff() {
-        return spellDamageBuff;
+    public double getSpellDamageBuffPercentage() {
+        return spellDamageBuffPercentage;
     }
 
     /**
-     * Gets the weapon damage buff (flat amount) of the clan.
+     * Gets the weapon damage buff percentage of the clan.
      * 
-     * @return The weapon damage buff of the clan.
+     * @return The weapon damage buff percentage of the clan.
      */
-    public int getWeaponDamageBuff() {
-        return weaponDamageBuff;
-    }
-
-    /**
-     * Gets the name of the clan.
-     * 
-     * @return The name of the clan.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Gets the damage buff percentage of the clan.
-     * 
-     * @return The damage buff percentage of the clan.
-     */
-    public double getDamageBuffPercentage() {
-        return damageBuffPercentage;
+    public double getWeaponDamageBuffPercentage() {
+        return weaponDamageBuffPercentage;
     }
 
     @Override
@@ -119,8 +119,8 @@ public class Clan {
         return name + " Clan: {\n" +
                 "\tDamage Buff (%) = " + damageBuffPercentage + "%\n" +
                 "\tHealth Buff (%) = " + healthBuffPercentage + "%\n" +
-                "\tSpell Damage Buff = " + spellDamageBuff + "\n" +
-                "\tWeapon Damage Buff = " + weaponDamageBuff + "\n" +
+                "\tSpell Damage Buff = " + spellDamageBuffPercentage + "\n" +
+                "\tWeapon Damage Buff = " + weaponDamageBuffPercentage + "\n" +
                 "}";
     }
 
@@ -139,9 +139,9 @@ public class Clan {
             return false;
         if (this.healthBuffPercentage != otherClan.healthBuffPercentage)
             return false;
-        if (this.spellDamageBuff != otherClan.spellDamageBuff)
+        if (this.spellDamageBuffPercentage != otherClan.spellDamageBuffPercentage)
             return false;
-        if (this.weaponDamageBuff != otherClan.weaponDamageBuff)
+        if (this.weaponDamageBuffPercentage != otherClan.weaponDamageBuffPercentage)
             return false;
 
         return name.equals(otherClan.name);
@@ -154,8 +154,8 @@ public class Clan {
         int result = name.hashCode();
         result = 31 * result + Double.hashCode(damageBuffPercentage);
         result = 31 * result + Double.hashCode(healthBuffPercentage);
-        result = 31 * result + spellDamageBuff;
-        result = 31 * result + weaponDamageBuff;
+        result = 31 * result + Double.hashCode(spellDamageBuffPercentage);
+        result = 31 * result + Double.hashCode(weaponDamageBuffPercentage);
 
         return result;
     }

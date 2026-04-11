@@ -1,12 +1,12 @@
 public class Spell implements Attack {
     /** The name of the spell. */
-    private String name;
+    private final String name;
     /** The number of spell points required to cast the spell. */
-    private int pointsToCast;
+    private final int pointsToCast;
     /** The amount of damage the spell deals before any multipliers. */
-    private int baseDamage;
+    private final int baseDamage;
     /** The percentage of damage that is converted to HP for the caster. */
-    private double lifeStealPercentage;
+    private final double lifeStealPercentage;
 
     public Spell(String name, int pointsToCast, int baseDamage, double lifeStealPercentage) {
         this.name = name;

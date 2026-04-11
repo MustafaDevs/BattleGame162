@@ -57,12 +57,28 @@ public class Warrior extends Character {
     public String getCharacterType() {
         return "Warrior";
     }
+    
+    @Override
+    public boolean canUse(Attack attack) {
+        if (!(attack instanceof Weapon)) {
+            return false;
+        }
+
+        Weapon attackWeapon = (Weapon) attack;
+
+        if (!attackWeapon.equals(this.weapon)) {
+            return false;
+        }
+
+        return getStamina() >= attackWeapon.getStaminaToAttack();
+    }
 
     @Override
     public boolean equals(Object obj) {
         if (!super.equals(obj)) return false;
         else {
-            Warrior otherWarrior = (Warrior)obj;
+            Warrior otherWarrior = (Warrior) obj;
+
             if (!otherWarrior.weapon.equals(this.weapon)) {
                 return false;
             }
@@ -73,8 +89,7 @@ public class Warrior extends Character {
 
     @Override
     public String toString() {
-        // TODO
-        return "";
+        return super.toString() + "  Wielding: " + weapon.getName();
     }
 
     

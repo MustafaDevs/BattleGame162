@@ -21,7 +21,7 @@ public class Mage extends Character {
     /** The character's spell points. */
     private int spellPoints;
     /** The set of spells the character knows/can use. */
-    private final Set<Spell> spells;
+    private final Set<Spell> knownSpells;
 
     /**
      * Creates a new mage with the given name and clan.
@@ -32,7 +32,7 @@ public class Mage extends Character {
      */
     public Mage(Name name, Clan clan) {
         super(name, clan);
-        this.spells = new HashSet<>();
+        this.knownSpells = new HashSet<>();
     }
 
 
@@ -42,7 +42,7 @@ public class Mage extends Character {
      * @return A string representation of the set of the mage's spells.
      */
     public String getSpells() {
-        return spells.toString();
+        return knownSpells.toString();
     }
 
     /**
@@ -53,7 +53,7 @@ public class Mage extends Character {
      *                set.
      */
     public void addSpell(Spell spell) {
-        spells.add(spell);
+        knownSpells.add(spell);
     }
 
     /**
@@ -63,7 +63,7 @@ public class Mage extends Character {
      * @postcondition If the mage knew the spell before, they no longer do, and thus cannot use it.
      */
     public void removeSpell(Spell spell) {
-        spells.remove(spell);
+        knownSpells.remove(spell);
     }
 
     /**
@@ -74,7 +74,7 @@ public class Mage extends Character {
      *         contains the given spell).
      */
     public boolean knowsSpell(Spell spell) {
-        return spells.contains(spell);
+        return knownSpells.contains(spell);
     }
 
     /**
@@ -85,7 +85,7 @@ public class Mage extends Character {
      *         and has enough spell points).
      */
     public boolean canCastSpell(Spell spell) {
-        return (spells.contains(spell)) && (spellPoints >= spell.getPointsToCast());
+        return (knownSpells.contains(spell)) && (spellPoints >= spell.getPointsToCast());
     }
 
     /**
@@ -118,11 +118,27 @@ public class Mage extends Character {
             Mage otherMage = (Mage)obj;
 
             // Stamina is a volatile property and will therefore not be used to check equality.
-            if (!otherMage.spells.equals(otherMage.spells)) {
+            if (!otherMage.knownSpells.equals(otherMage.knownSpells)) {
                 return false;
             }
         }
 
         return true;
+    }
+     
+    @Override
+    public boolean canUse(Attack attack) {
+        if (!(attack instanceof Spell)) {
+            return false;
+        }
+
+        Spell attackSpell = (Spell) attack;
+
+        // Using the == operator rather than the .equals() method because we are checking
+        // if these are literally the exact same weapon in memory, not simply two weapons with the same stats.
+        if (!knownSpells.contains(attackSpell))
+            return false;
+        }
+
     }
 }
