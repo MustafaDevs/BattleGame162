@@ -84,10 +84,4 @@ public class Spell implements Attack {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'calculateDamage'");
     }
-
-    @Override
-    public boolean canAttack(Character self) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'canAttack'");
-    }
 }
