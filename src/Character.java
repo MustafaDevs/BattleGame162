@@ -235,8 +235,7 @@ public abstract class Character implements Comparable<Character> {
 			// comes down to their clan names (alphabetically).
 
 			// Though we could compare clan buffs, determining which buffs are more
-			// important than others
-			// is a bit tricky and, in my opinion, not necessary.
+			// important than others is a bit tricky and unnecessary.
 			return this.clan.getName().compareTo(other.clan.getName());
 		}
 	}

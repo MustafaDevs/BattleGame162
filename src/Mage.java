@@ -134,11 +134,11 @@ public class Mage extends Character {
 
         Spell attackSpell = (Spell) attack;
 
-        // Using the == operator rather than the .equals() method because we are checking
-        // if these are literally the exact same weapon in memory, not simply two weapons with the same stats.
-        if (!knownSpells.contains(attackSpell))
+        // Since 
+        if (!knownSpells.contains(attackSpell)) {
             return false;
         }
 
+        return getSpellPoints() >= attackSpell.getPointsToCast();
     }
 }

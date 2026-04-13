@@ -41,6 +41,10 @@ public class Weapon implements Attack {
     public double getLifeStealPercentage() {
         return lifeStealPercentage;
     }
+
+    public int getLifeStealFromDamage(int damage) {
+        return (int)(Math.round(damage * lifeStealPercentage));
+    }
     
     public double getDamageVariance() {
         return damageVariance;
@@ -85,18 +89,29 @@ public class Weapon implements Attack {
     }
 
     @Override
-    public void execute(Character self, Character target) {
-        // TODO Auto-generated method stub
-        //throw new UnsupportedOperationException("Unimplemented method 'execute'");
-        if (self == target) {
+    public int execute(Character attacker, Character target) {
+        if (attacker == target) {
             throw new IllegalArgumentException("You cannot execute an attack on yourself.");
         }
 
+        int damage = calculateDamage(attacker, damageVariance);
+        int healthFromLifeSteal  = getLifeStealFromDamage(damage);
 
+        target.subtractHealth(damage);
+        attacker.addHealth(healthFromLifeSteal);
+
+        return damage;
     }
 
-    @Override
-    public int calculateDamage(Character self, double variance) {
+    /**
+     * Calculates the damage that a hypothetical attack may perform.  Has damage variance.
+     * 
+     * @param attacker The character performing the attack.
+     * @param variance The percentage of variance in the min/max potential damage (0.5 = 50%, 0.02 = 2%)
+     * @return A rounded down integer value representing the amount of damage performed by this attack.
+     * @throws IllegalArgumentException if variance is less than 0.0
+     */
+    private int calculateDamage(Character attacker, double variance) {
         // Variance cannot be negative
         if (variance < 0.0) {
             throw new IllegalArgumentException("Damage variance cannot be negative (less than 0.0).");
@@ -106,7 +121,7 @@ public class Weapon implements Attack {
         Random rand = new Random();
 
         // Calculate the total buff percentage from the clan's base damage buff and weapon damage buff.
-        Clan clan = self.getClan();
+        Clan clan = attacker.getClan();
         double baseDamageBuffPercentage = clan.getDamageBuffPercentage();
         double weaponDamageBuffPercentage = clan.getWeaponDamageBuffPercentage();
 

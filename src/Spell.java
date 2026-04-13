@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Spell implements Attack {
     /** The name of the spell. */
     private final String name;
@@ -74,14 +76,39 @@ public class Spell implements Attack {
     }
 
     @Override
-    public void execute(Character self, Character target) {
+    public int execute(Character self, Character target, int damage) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'execute'");
+        throw new UnsupportedOperationException("Unimplemented method 'execute'"
     }
 
     @Override
     public int calculateDamage(Character self, double variance) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'calculateDamage'");
+        // Variance cannot be negative
+        if (variance < 0.0) {
+            throw new IllegalArgumentException("Damage variance cannot be negative (less than 0.0).");
+        }
+
+        // Need a new Random object for calculating pseudorandom damage.
+        Random rand = new Random();
+
+        // Calculate the total buff percentage from the clan's base damage buff and spell damage buff.
+        Clan clan = self.getClan();
+        double baseDamageBuffPercentage = clan.getDamageBuffPercentage();
+        double spellDamageBuffPercentage = clan.getSpellDamageBuffPercentage();
+
+        // The number to multiply the randomly calculated damage by (example: if damage was 1 and buffs were 30%, 1 * 1.3).
+        double totalDamageMultiplier = 1.0 + (baseDamageBuffPercentage + spellDamageBuffPercentage);
+
+        // Minimum & maximum range for the base damage (lower bound, upper bound)
+        int minBaseDamage = (int) Math.round(baseDamage * (1 - variance));
+        int maxBaseDamage = (int) Math.round(baseDamage * (1 + variance));
+
+        // Get a pseudorandom damage in the range [minBaseDamage, maxBaseDamage].
+        int randomDamage = rand.nextInt(maxBaseDamage - minBaseDamage + 1) + minBaseDamage;
+
+        // The randomly generated damage multiplied by the total damage multiplier, rounded and then converted to an integer.
+        int damageWithBuffs = (int)Math.round(randomDamage * totalDamageMultiplier);
+
+        return damageWithBuffs;
     }
 }
