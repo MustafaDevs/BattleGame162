@@ -1,8 +1,8 @@
 import java.util.Random;
 
 /**
- * A class representing a Weapon in the game, which has the properties of base
- * damage and life steal percentage.
+ * A class representing a Weapon in the game, which can be
+ * equipped by a warrior.  Used to perform attacks.
  * 
  * @author Mustafa Faqiryar
  */
@@ -18,6 +18,14 @@ public class Weapon implements Attack {
     /** The percentage of variance that an attack can have. */
     private final double damageVariance;
 
+    /**
+     * 
+     * @param name
+     * @param baseDamage
+     * @param lifeStealPercentage
+     * @param damageVariance
+     * @param staminaToAttack
+     */
     public Weapon(String name, int baseDamage, double  lifeStealPercentage, double damageVariance, int  staminaToAttack) {
         this.name = name;
         this.baseDamage = baseDamage;
@@ -50,44 +58,7 @@ public class Weapon implements Attack {
         return damageVariance;
     }
 
-    @Override
-    public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + baseDamage;
-        result = 31 * result + Double.hashCode(lifeStealPercentage);
-        result = 31 * result + Double.hashCode(damageVariance);
-        result = 31 * result + staminaToAttack;
-
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-			return true;
-        }
-		if (obj == null || this.getClass() != obj.getClass()) {
-			return false;
-        }
-
-        Weapon otherWeapon = (Weapon)obj;
-
-        if (!this.name.equals(otherWeapon.name)) {
-            return false;
-        }
-        if (this.baseDamage != otherWeapon.baseDamage) {
-            return false;
-        }
-        if (this.lifeStealPercentage != otherWeapon.lifeStealPercentage) {
-            return false;
-        }
-        if (this.damageVariance != otherWeapon.damageVariance) {
-            return false;
-        }
-
-        return (this.staminaToAttack == otherWeapon.staminaToAttack);
-    }
-
+    
     @Override
     public int execute(Character attacker, Character target) {
         if (attacker == target) {
@@ -139,5 +110,43 @@ public class Weapon implements Attack {
         int damageWithBuffs = (int)Math.round(randomDamage * totalDamageMultiplier);
 
         return damageWithBuffs;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + baseDamage;
+        result = 31 * result + Double.hashCode(lifeStealPercentage);
+        result = 31 * result + Double.hashCode(damageVariance);
+        result = 31 * result + staminaToAttack;
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+			return true;
+        }
+		if (obj == null || this.getClass() != obj.getClass()) {
+			return false;
+        }
+
+        Weapon otherWeapon = (Weapon)obj;
+
+        if (!this.name.equals(otherWeapon.name)) {
+            return false;
+        }
+        if (this.baseDamage != otherWeapon.baseDamage) {
+            return false;
+        }
+        if (this.lifeStealPercentage != otherWeapon.lifeStealPercentage) {
+            return false;
+        }
+        if (this.damageVariance != otherWeapon.damageVariance) {
+            return false;
+        }
+
+        return (this.staminaToAttack == otherWeapon.staminaToAttack);
     }
 }
