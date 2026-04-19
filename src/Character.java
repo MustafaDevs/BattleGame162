@@ -174,6 +174,26 @@ public abstract class Character implements Comparable<Character> {
      */
     public abstract boolean canUse(Attack attack);
 
+	/**
+	 * Performs an attack on a target if this character is allowed to use it.
+	 *
+	 * @param target The character receiving the attack.
+	 * @param attack The attack being used.
+	 * @return The amount of damage dealt.
+	 * @throws IllegalArgumentException if the attack is null or this character
+	 *                                  cannot use it.
+	 */
+	public int performAttack(Character target, Attack attack) {
+		if (attack == null) {
+			throw new IllegalArgumentException("Attack cannot be null.");
+		}
+		if (!canUse(attack)) {
+			throw new IllegalArgumentException(getCharacterType() + " cannot use that attack.");
+		}
+
+		return attack.execute(this, target);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%s (%s, Level: %d, XP: %d, HP: %d) from the %s clan.)", name.getFullName(),
@@ -208,7 +228,6 @@ public abstract class Character implements Comparable<Character> {
 	public int hashCode() {
 		int result = name.hashCode();
 		result = 31 * result + clan.hashCode();
-		result = 31 * result + health;
 		result = 31 * result + experiencePoints;
 
 		return result;

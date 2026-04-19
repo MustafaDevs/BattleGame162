@@ -6,11 +6,13 @@
 public class Warrior extends Character {
     /**
      * Class Invariants:
+     * - A warrior's weapon cannot be null.
      * - A warrior's stamina must be a nonnegative number.
-     * 
      */
 
+    /** The warrior's weapon. */
     private Weapon weapon;
+    /** The warrior's stamina (used to perform tasks such as attacks) */
     private int stamina;
 
     /** Creates a new Warrior character.
@@ -23,6 +25,7 @@ public class Warrior extends Character {
     public Warrior(Name name, Clan clan, Weapon weapon) {
         super(name, clan);
         this.weapon = weapon;
+        stamina = getMaxStamina();
     }
 
     /**
@@ -33,6 +36,34 @@ public class Warrior extends Character {
     public Weapon getWeapon() {
         return weapon;
     }
+
+    /**
+     * Adds stamina to the warrior.
+     * 
+     * @param amount The amount of stamina to add
+     * @postcondition The warrior's stamina will be equal to whichever is less between
+     *                the warrior's maximum stamina and their current stamina
+     *                plus the amount to add, or: Min(getMaxStamina(),
+     *                getStamina() + SP)
+     */
+    public void addStamina(int amount) {
+        if (amount < 1) {
+            throw new IllegalArgumentException("The amount of stamina to add must be a positive integer.");
+        }
+        stamina = Math.min(getMaxStamina(), stamina + amount);
+    }
+
+    /**
+     * Removes spell points from the mage.
+     * 
+     * @param amount The amount of stamina to remove.
+     * @postcondition The warrior's stamina will be equal to whichever is greater between
+     *                zero and their current stamina minus the amount to
+     *                remove, or: Max(0, getStamina() - SP)
+     */
+    public void removeStamina(int amount) {
+        stamina = Math.max(0, stamina - amount);
+    }
     
     /**
      * Gets the warrior's stamina.  Warriors require certain amounts of stamina to perform certain attacks.
@@ -41,6 +72,15 @@ public class Warrior extends Character {
      */
     public int getStamina() {
         return stamina;
+    }
+
+    /**
+     * Returns the maximum stamina that a warrior can have.
+     * 
+     * @return
+     */
+    public int getMaxStamina() {
+        return 25 + (getLevel() * 5); // Max stamina increases per level.
     }
 
     /**
@@ -92,12 +132,10 @@ public class Warrior extends Character {
         return super.toString() + "  Wielding: " + weapon.getName();
     }
 
-    
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + weapon.hashCode();
-        result = 31 * result + stamina;
         
         return result;
     }

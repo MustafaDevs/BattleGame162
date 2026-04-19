@@ -12,7 +12,7 @@ public class Spell implements Attack {
     // - 0 <= pointsToCast
     // - 0 < baseDamage
     // - 0 <= lifeStealPercentage
-    // - 0 <= damageVariance
+    // - 0.0 <= damageVariance <= 1.0
 
     /** The name of the spell. */
     private final String name;
@@ -33,6 +33,7 @@ public class Spell implements Attack {
      * @param baseDamage The amount of damage the spell deals.  Must be a positive integer.
      * @param lifeStealPercentage The percentage of damage dealt by the spell that should be converted into health for the character casting it.  Must be a non-negative integer.
      * @param damageVariance The percentage of variance in the spell's maximum/minimum damage calculations (used for randomization). Must be a non-negative integer.
+     * @postcondition A new Spell will be created with the given properties.
      */
     public Spell(String name, int pointsToCast, int baseDamage, double lifeStealPercentage, double damageVariance) {
         this.name = name;
@@ -40,8 +41,16 @@ public class Spell implements Attack {
         this.baseDamage = baseDamage;
         this.lifeStealPercentage = lifeStealPercentage;
         this.damageVariance = damageVariance;
+
+        checkInvariants();
     }
 
+    /**
+     * Throws an exception if any Class Invariants are violated.
+     * 
+     * @throws IllegalArgumentException if any invariants are violated.  Since all fields are final, these invariants
+     * can only be violated in the constructor, so there is no need to throw an IllegalStateException at any point.
+     */
     private void checkInvariants() {
         if (name == null) {
             throw new IllegalStateException("The spell's name cannot be null.");
@@ -59,26 +68,63 @@ public class Spell implements Attack {
 
     // ======== Accessors ========
 
+    /**
+     * Gets the name of the spell.
+     * 
+     * @return The name of the spell.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the number of points required to cast the spell.
+     * 
+     * @return The amount of points a mage must have in order to cast the spell.
+     */
     public int getPointsToCast() {
         return pointsToCast;
     }
 
+    /**
+     * Gets the base damage dealt by the spell before any modifiers/multipliers are applied.
+     * 
+     * @return The base damage of the spell.
+     */
     public int getBaseDamage() {
         return baseDamage;
     }
 
+    /**
+     * Gets the life steal percentage of the spell (percentage of the damage that is added to the health of the one casting it).
+     * 
+     * @return The spell's life steal percentage.
+     */
     public double getLifeStealPercentage() {
         return lifeStealPercentage;
     }
 
+    /**
+     * Gets the amount of health (using the life steal percentage) based on a certain amount of damage dealt.
+     * 
+     * @param damage The amount of damage to which the life steal percentage should be applied to.  Must be a non-negative number.
+     * @return The amount of health a character should receive when they perform an attack that deals a given amount of damage.
+     * @throws IllegalArgumentException if the damage is less than zero.
+     */
     public int getLifeStealFromDamage(int damage) {
+        if (damage < 0) {
+            throw new IllegalArgumentException("The amount of damage cannot be less than zero.");
+        }
         return (int)(Math.round(damage * lifeStealPercentage));
     }
     
+    /**
+     * Gets the percentage of damage variance (example: 0.2 = 20%) which is used to randomize the damage dealt when casting the spell.
+     * If, for example, the damage variance was 20% and the base damage was 10 (ignoring all other modifiers), the attack
+     * would deal between 8-12 damage due to the possibility of dealing 20% less than and 20% more than the base damage.
+     * 
+     * @return The percentage of damage variance.
+     */
     public double getDamageVariance() {
         return damageVariance;
     }
@@ -101,7 +147,7 @@ public class Spell implements Attack {
     }
 
     /**
-     * Calculates the damage that a hypothetical attack may perform.  Has damage variance.
+     * Calculates the damage that an attack by a character may perform by applying modifiers in addition to damage variance.
      * 
      * @param attacker The character performing the attack.
      * @param variance The percentage of variance in the min/max potential damage (0.5 = 50%, 0.02 = 2%)
@@ -112,6 +158,9 @@ public class Spell implements Attack {
         // Variance cannot be negative
         if (variance < 0.0) {
             throw new IllegalArgumentException("Damage variance cannot be negative (less than 0.0).");
+        }
+        else if (variance > 1.0) {
+            throw new IllegalArgumentException("Damage variance cannot be greater than 1.0 (100%).");
         }
 
         // Need a new Random object for calculating pseudorandom damage.
@@ -125,9 +174,10 @@ public class Spell implements Attack {
         // The number to multiply the randomly calculated damage by (example: if damage was 1 and buffs were 30%, 1 * 1.3).
         double totalDamageMultiplier = 1.0 + (baseDamageBuffPercentage + spellDamageBuffPercentage);
 
-        // Minimum & maximum range for the base damage (lower bound, upper bound)
-        int minBaseDamage = (int) Math.round(baseDamage * (1 - variance));
-        int maxBaseDamage = (int) Math.round(baseDamage * (1 + variance));
+        // Minimum & maximum range for the base damage (lower bound, upper bound).
+        // Math.max() is used to ensure that damage is always greater than or equal to 1.
+        int minBaseDamage = Math.max(1, (int) Math.round(baseDamage * (1 - variance)));
+        int maxBaseDamage = Math.max(1, (int) Math.round(baseDamage * (1 + variance)));
 
         // Get a pseudorandom damage in the range [minBaseDamage, maxBaseDamage].
         int randomDamage = rand.nextInt(maxBaseDamage - minBaseDamage + 1) + minBaseDamage;
@@ -140,6 +190,11 @@ public class Spell implements Attack {
 
     // ======== Utility Methods ========
 
+    /**
+     * Gets a String containing a detailed description of the spell.
+     *  
+     * @return The String containing a detailed description of the spell.
+     */
     public String toDetailedString() {
         String result = name + " (Cost: " + pointsToCast + " SP)" + " | Base Damage: " + baseDamage
                 + " | Life Steal (%): " + lifeStealPercentage;
