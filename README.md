@@ -7,8 +7,8 @@ All characters have health, XP, a level, a clan, and a name.  A character's clan
 
 The below formulas are used to calculate level and maximum health, with health being a volatile property (subject to change at any given point):
 
-Level: `experiencePoints / 100`\n
-Maximum Health: `100 + (getLevel() * 10)`
+- Level: `experiencePoints / 100`
+- Maximum Health: `100 + (getLevel() * 10)`
 
 ## Mage Class
 Mages differ from warriors in that they possess a set of spells that can be modified at any point in time.  They can only cast spells that are in their set of known spells, and every spell costs some amount of spell points to cast.
