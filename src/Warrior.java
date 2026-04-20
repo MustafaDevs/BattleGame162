@@ -7,7 +7,7 @@ public class Warrior extends Character {
     /**
      * Class Invariants:
      * - A warrior's weapon cannot be null.
-     * - A warrior's stamina must be a nonnegative number.
+     * - A warrior's stamina must be in the range 0 <= stamina <= getMaxStamina()
      */
 
     /** The warrior's weapon. */
@@ -24,6 +24,9 @@ public class Warrior extends Character {
      */
     public Warrior(Name name, Clan clan, Weapon weapon) {
         super(name, clan);
+        if (weapon == null) {
+            throw new IllegalArgumentException("A warrior's weapon cannot be null.");
+        }
         this.weapon = weapon;
         stamina = getMaxStamina();
     }
@@ -54,7 +57,7 @@ public class Warrior extends Character {
     }
 
     /**
-     * Removes spell points from the mage.
+     * Removes stamina from the warrior.
      * 
      * @param amount The amount of stamina to remove.
      * @postcondition The warrior's stamina will be equal to whichever is greater between
@@ -62,6 +65,9 @@ public class Warrior extends Character {
      *                remove, or: Max(0, getStamina() - SP)
      */
     public void removeStamina(int amount) {
+        if (amount < 1) {
+            throw new IllegalArgumentException("The amount of stamina to add must be a positive integer.");
+        }
         stamina = Math.max(0, stamina - amount);
     }
     
@@ -86,10 +92,15 @@ public class Warrior extends Character {
     /**
      * Updates the warrior's weapon.
      * 
-     * @param newWeapon The new weapon for the warrior.
+     * @param newWeapon The new weapon for the warrior. Cannot be null.
      * @postcondition The warrior's weapon will be updated to the new weapon.
+     * @throws IllegalArgumentException if the new weapon is null.
      */
     public void updateWeapon(Weapon newWeapon) {
+        if (newWeapon == null) {
+            throw new IllegalArgumentException("The warrior's new weapon cannot be null.");
+        }
+
         this.weapon = newWeapon;
     }
 

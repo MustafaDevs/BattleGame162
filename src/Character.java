@@ -5,6 +5,8 @@
 public abstract class Character implements Comparable<Character> {
 	/**
 	 * Class Invariants:
+	 * - name != null
+	 * - clan != null
 	 * - 0 <= Health <= 100 + (getLevel() * 10)
 	 * - 0 <= experiencePoints
 	 */
@@ -28,6 +30,13 @@ public abstract class Character implements Comparable<Character> {
 	 *                default.
 	 */
 	public Character(Name name, Clan clan) {
+		if (name == null) {
+			throw new IllegalArgumentException("Character name cannot be null.");
+		}
+		if (clan == null) {
+			throw new IllegalArgumentException("Character clan cannot be null.");
+		}
+
 		this.name = name;
 		this.clan = clan;
 		this.health = 100;
@@ -112,8 +121,11 @@ public abstract class Character implements Comparable<Character> {
 	/**
 	 * Increases the character's current experiencePoints by some given amount.
 	 * 
-	 * @param xpToAdd The amount of experience points that should be added onto the character's current experience points.  Must be a positive integer.
-	 * @throws IllegalArgumentException if xpToAdd is less than or equal to 0 (i.e., xpToAdd is not a positive integer)
+	 * @param xpToAdd The amount of experience points that should be added onto the
+	 *                character's current experience points. Must be a positive
+	 *                integer.
+	 * @throws IllegalArgumentException if xpToAdd is less than or equal to 0 (i.e.,
+	 *                                  xpToAdd is not a positive integer)
 	 */
 	private void addExperiencePoints(int xpToAdd) {
 		if (xpToAdd <= 0) {
@@ -167,12 +179,12 @@ public abstract class Character implements Comparable<Character> {
 	public abstract String getCharacterType();
 
 	/**
-     * Checks if a given character is able to perform an attack.
-     * 
-     * @param attack The attack to check if the character can use.
-     * @return true if the character attacker can perform the attack.
-     */
-    public abstract boolean canUse(Attack attack);
+	 * Checks if a given character is able to perform an attack.
+	 * 
+	 * @param attack The attack to check if the character can use.
+	 * @return true if the character attacker can perform the attack.
+	 */
+	public abstract boolean canUse(Attack attack);
 
 	/**
 	 * Performs an attack on a target if this character is allowed to use it.
@@ -180,15 +192,27 @@ public abstract class Character implements Comparable<Character> {
 	 * @param target The character receiving the attack.
 	 * @param attack The attack being used.
 	 * @return The amount of damage dealt.
-	 * @throws IllegalArgumentException if the attack is null or this character
-	 *                                  cannot use it.
+	 * @throws IllegalArgumentException if the target is null, if the attack is
+	 *                                  null, if this character
+	 *                                  cannot use the provided attack, or if the
+	 *                                  target's health is equal to zero (i.e.,
+	 *                                  they're already dead).
 	 */
 	public int performAttack(Character target, Attack attack) {
+		if (target == null) {
+			throw new IllegalArgumentException("The target cannot be null.");
+		}
 		if (attack == null) {
 			throw new IllegalArgumentException("Attack cannot be null.");
 		}
 		if (!canUse(attack)) {
 			throw new IllegalArgumentException(getCharacterType() + " cannot use that attack.");
+		}
+		if (this.getHealth() == 0) {
+			throw new IllegalStateException("Characters cannot use attacks when they're at zero health.");
+		}
+		if (target.getHealth() == 0) {
+			throw new IllegalArgumentException("Cannot attack a character that is already dead (has zero health).");
 		}
 
 		return attack.execute(this, target);
@@ -246,7 +270,8 @@ public abstract class Character implements Comparable<Character> {
 			return other.experiencePoints - this.experiencePoints;
 		} else if (!this.name.equals(other.name)) {
 			// Using getFullName() allows us to compare using the String.compareTo() method
-			// rather than having our own implementation, which I find unnecessary (though that is
+			// rather than having our own implementation, which I find unnecessary (though
+			// that is
 			// definitely a valid design choice).
 			return this.name.getFullName().compareTo(other.name.getFullName());
 		} else {

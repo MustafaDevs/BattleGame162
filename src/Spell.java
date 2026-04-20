@@ -149,25 +149,28 @@ public class Spell implements Attack {
     /**
      * Calculates the damage that an attack by a character may perform by applying modifiers in addition to damage variance.
      * 
-     * @param attacker The character performing the attack.
+     * @param character The mage performing the attack.
      * @param variance The percentage of variance in the min/max potential damage (0.5 = 50%, 0.02 = 2%)
      * @return A rounded down integer value representing the amount of damage performed by this attack.
-     * @throws IllegalArgumentException if variance is less than 0.0
+     * @throws IllegalArgumentException if variance is less than 0.0 or greater than 1.0
+     * @postcondition 
      */
-    private int calculateDamage(Character self, double variance) {
+    private int calculateDamage(Character character, double variance) {
         // Variance cannot be negative
-        if (variance < 0.0) {
-            throw new IllegalArgumentException("Damage variance cannot be negative (less than 0.0).");
+        if (variance < 0.0 || variance > 1.0) {
+            throw new IllegalArgumentException("The damage variance must be in the range [0.0, 1.0] (cannot be negative or exceed 100%).");
         }
-        else if (variance > 1.0) {
-            throw new IllegalArgumentException("Damage variance cannot be greater than 1.0 (100%).");
+        if (!(character instanceof Mage)) {
+            throw new IllegalArgumentException("The character casting the spell must be a mage.");
         }
+
+        Mage attacker = (Mage)character;
 
         // Need a new Random object for calculating pseudorandom damage.
         Random rand = new Random();
 
         // Calculate the total buff percentage from the clan's base damage buff and spell damage buff.
-        Clan clan = self.getClan();
+        Clan clan = attacker.getClan();
         double baseDamageBuffPercentage = clan.getDamageBuffPercentage();
         double spellDamageBuffPercentage = clan.getSpellDamageBuffPercentage();
 
@@ -184,6 +187,9 @@ public class Spell implements Attack {
 
         // The randomly generated damage multiplied by the total damage multiplier, rounded and then converted to an integer.
         int damageWithBuffs = (int)Math.round(randomDamage * totalDamageMultiplier);
+
+        // Remove the amount of spell points it takes to cast the spell from the attacker's spell points.
+        attacker.removeSpellPoints(getPointsToCast());
 
         return damageWithBuffs;
     }

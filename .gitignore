@@ -28,3 +28,6 @@ replay_pid*
 
 # Bin folder
 /bin
+
+# Class files
+*.class

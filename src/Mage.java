@@ -12,6 +12,8 @@ public class Mage extends Character {
      * Class Invariants:
      * - A mage's maximum spell points must be equal to 25 + (5 * the mage's level).
      * - A mage's spell points cannot exceed their maximum spell points.
+     * - The set of the mage's known spells cannot be null.
+     * - The set of the mage's known spells cannot contain null.
      * - A mage cannot cast a spell that they do not know (i.e., is not in the set
      * of spells).
      * - A mage cannot cast a spell if the spell costs more spell points than they
@@ -87,6 +89,9 @@ public class Mage extends Character {
      *                set.
      */
     public void addSpell(Spell spell) {
+        if (spell == null) {
+            throw new IllegalArgumentException("A mage cannot learn a null spell.");
+        }
         knownSpells.add(spell);
     }
 

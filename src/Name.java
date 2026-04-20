@@ -4,6 +4,10 @@
  * @author Mustafa Faqiryar
  */
 public class Name {
+    // Class Invariants:
+    // - firstName cannot be null or empty
+    // - lastName cannot be null or empty
+
     /** The first name. */
     private final String firstName;
     /** The last name. */
@@ -20,6 +24,9 @@ public class Name {
     public Name(String firstName, String lastName) {
         if (firstName == null || lastName == null) {
             throw new IllegalArgumentException("The first and last name must not be null.");
+        }
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            throw new IllegalArgumentException("The first and last name must not be empty.");
         }
         
         this.firstName = firstName;

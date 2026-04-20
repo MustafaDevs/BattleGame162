@@ -156,16 +156,21 @@ public class Weapon implements Attack {
     /**
      * Calculates the damage that a hypothetical attack may perform.  Has damage variance.
      * 
-     * @param attacker The character performing the attack.
+     * @param attacker The warrior performing the attack.
      * @param variance The percentage of variance in the min/max potential damage (0.5 = 50%, 0.02 = 2%).  Must be in range [0.0, 1.0].
      * @return A rounded down integer value representing the amount of damage performed by this attack.
-     * @throws IllegalArgumentException if variance is less than 0.0 or greater than 1.0
+     * @throws IllegalArgumentException if the character is not a warrior OR if variance is less than 0.0 or greater than 1.0
      */
-    private int calculateDamage(Character attacker, double variance) {
+    private int calculateDamage(Character character, double variance) {
         // Variance cannot be negative
         if (variance < 0.0 || variance > 1.0) {
             throw new IllegalArgumentException("The variance in damage must be in the range [0.0, 1.0] (cannot be negative or exceed 100%).");
         }
+        if (!(character instanceof Warrior)) {
+            throw new IllegalArgumentException("The character using the weapon must be a warrior.");
+        }
+
+        Warrior attacker = (Warrior)character;
 
         // Need a new Random object for calculating pseudorandom damage.
         Random rand = new Random();
@@ -188,6 +193,9 @@ public class Weapon implements Attack {
 
         // The randomly generated damage multiplied by the total damage multiplier, rounded and then converted to an integer.
         int damageWithBuffs = (int)Math.round(randomDamage * totalDamageMultiplier);
+
+        // Remove the stamina cost from the attacker's stamina.
+        attacker.removeStamina(getStaminaToAttack());
 
         return damageWithBuffs;
     }
