@@ -160,7 +160,7 @@ public class Mage extends Character {
         else {
             Mage otherMage = (Mage) obj;
 
-            // Stamina is a volatile property and will therefore not be used to check
+            // spellPoints is a volatile property and will therefore not be used to check
             // equality.
             if (!this.knownSpells.equals(otherMage.knownSpells)) {
                 return false;

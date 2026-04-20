@@ -34,12 +34,12 @@ public class Weapon implements Attack {
      * @param damageVariance The percentage of variance in the weapon's maximum/minimum damage calculations (used for randomization). Must be a non-negative integer.
      * @postcondition A new Weapon will be created with the given properties.
      */
-    public Weapon(String name, int baseDamage, double lifeStealPercentage, double damageVariance, int staminaToAttack) {
+    public Weapon(String name, int staminaToAttack, int baseDamage, double lifeStealPercentage, double damageVariance) {
         this.name = name;
+        this.staminaToAttack = staminaToAttack;
         this.baseDamage = baseDamage;
         this.lifeStealPercentage = lifeStealPercentage;
         this.damageVariance = damageVariance;
-        this.staminaToAttack = staminaToAttack;
 
         checkInvariants();
     }
