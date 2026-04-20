@@ -7,7 +7,7 @@ All characters have health, XP, a level, a clan, and a name.  A character's clan
 
 The below formulas are used to calculate level and maximum health, with health being a volatile property (subject to change at any given point):
 
-Level: `experiencePoints / 100`
+Level: `experiencePoints / 100`\n
 Maximum Health: `100 + (getLevel() * 10)`
 
 ## Mage Class
