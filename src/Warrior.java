@@ -105,6 +105,11 @@ public class Warrior extends Character {
     }
 
     @Override
+    protected void handleLevelUp() {
+        stamina = getMaxStamina();
+    }
+
+    @Override
     public String getCharacterType() {
         return "Warrior";
     }

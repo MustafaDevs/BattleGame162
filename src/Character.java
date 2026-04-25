@@ -125,14 +125,29 @@ public abstract class Character implements Comparable<Character> {
 	 *                character's current experience points. Must be a positive
 	 *                integer.
 	 * @throws IllegalArgumentException if xpToAdd is less than or equal to 0 (i.e.,
-	 *                                  xpToAdd is not a positive integer)
+	 *                                  xpToAdd is not a positive integer).
+	 * @postcondition if the character gained a level, their health will be set to their maximum health.
 	 */
-	private void addExperiencePoints(int xpToAdd) {
+	public void addExperiencePoints(int xpToAdd) {
 		if (xpToAdd <= 0) {
 			throw new IllegalArgumentException("The number of experience points to add must be a positive integer.");
 		}
+		int previousLevel = getLevel();
 		experiencePoints += xpToAdd;
+
+		if (getLevel() > previousLevel) { // character gained a level
+			health = getMaxHealth();
+			handleLevelUp();
+		}
 	}
+
+	/**
+	 * Handles a level up.  Behavior dependent on the subclass overriding it.
+	 * 
+	 * Generally speaking, a level up will result in a character's form of energy being set to its maximum.
+	 * The maximum amount of energy a character can have scales with level.
+	 */
+	protected abstract void handleLevelUp();
 
 	/**
 	 * Subtracts health from the character.
@@ -181,6 +196,9 @@ public abstract class Character implements Comparable<Character> {
 	/**
 	 * Checks if a given character is able to perform an attack.
 	 * 
+	 * Characters cannot use an attack that they do not possess (or do not have equipped) or those that
+	 * have requirements they don't meet (example: an energy requirement that exceeds the character's energy).
+	 * 
 	 * @param attack The attack to check if the character can use.
 	 * @return true if the character attacker can perform the attack.
 	 */
@@ -220,7 +238,7 @@ public abstract class Character implements Comparable<Character> {
 
 	@Override
 	public String toString() {
-		return String.format("%s (%s, Level: %d, XP: %d, HP: %d) from the %s clan.)", name.getFullName(),
+		return String.format("%s (%s, Level: %d, XP: %d, HP: %d) from the %s clan.", name.getFullName(),
 				getCharacterType(), getLevel(), experiencePoints, health, clan.getName());
 	}
 

@@ -149,6 +149,11 @@ public class Mage extends Character {
     }
 
     @Override
+    protected void handleLevelUp() {
+        spellPoints = getMaxSpellPoints();
+    }
+
+    @Override
     public String getCharacterType() {
         return "Mage";
     }
